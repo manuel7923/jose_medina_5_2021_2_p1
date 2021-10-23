@@ -43,12 +43,14 @@ class _CharactersScreenState extends State<CharactersScreen> {
         children: _characters.map((e) {
           return Card(
             child: InkWell(
+              onTap: () => _goInfoCharacter(e),
               child: Container(
                 margin: EdgeInsets.all(10),
                 padding: EdgeInsets.all(5),
                 child: Column(
                   children: [
                     Row(
+                      
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
@@ -56,6 +58,13 @@ class _CharactersScreenState extends State<CharactersScreen> {
                           style: TextStyle(
                             fontSize: 20
                           ),
+                        ),
+                        FadeInImage(
+                          placeholder: AssetImage('assets/not_found.png'), 
+                          image: NetworkImage(e.image),
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover
                         ),
                         Icon(Icons.arrow_forward_ios),
                       ],
@@ -68,6 +77,18 @@ class _CharactersScreenState extends State<CharactersScreen> {
         }).toList(),
       ),
     );
+  }
+
+  void _goInfoCharacter(Character character) async {
+    String? result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CharactersScreen()
+      )
+    );
+    if (result == 'yes') {
+      _getCharacters();
+    }
   }
 
   Future<Null> _getCharacters() async {
