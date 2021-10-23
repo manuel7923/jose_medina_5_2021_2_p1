@@ -5,6 +5,7 @@ import 'package:rycky_and_morty_app/components/loader_component.dart';
 import 'package:rycky_and_morty_app/helpers/api_helper.dart';
 import 'package:rycky_and_morty_app/models/character.dart';
 import 'package:rycky_and_morty_app/models/response.dart';
+import 'package:rycky_and_morty_app/screens/character_screen.dart';
 
 class CharactersScreen extends StatefulWidget {
   const CharactersScreen({ Key? key }) : super(key: key);
@@ -15,6 +16,8 @@ class CharactersScreen extends StatefulWidget {
 
 class _CharactersScreenState extends State<CharactersScreen> {
   bool _showLoader = false;
+  String _search = '';
+  bool _isFiltered = false;
 
   List<Character> _characters = [];
   String _description = '';
@@ -26,6 +29,20 @@ class _CharactersScreenState extends State<CharactersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Marcas'),
+        actions: <Widget>[
+          _isFiltered
+          ? IconButton(
+              onPressed: _removeFilter, 
+              icon: Icon(Icons.filter_none)
+            )
+          : IconButton(
+              onPressed:  _showFilter, 
+              icon: Icon(Icons.filter_alt)
+            )
+        ],
+      ),
       body: Center(
         child: _showLoader ? LoaderComponent(text: 'Por favor espere...') : _getContent(),
       ),
@@ -83,12 +100,83 @@ class _CharactersScreenState extends State<CharactersScreen> {
     String? result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CharactersScreen()
+        builder: (context) => CharacterScreen(character: character,)
       )
     );
     if (result == 'yes') {
       _getCharacters();
     }
+  }
+
+  void _showFilter() {
+    showDialog(
+      context: context, 
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          title: Text('Filtrar Personajes'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text('Escriba las primeras letras del personaje'),
+              SizedBox(height: 10,),
+              TextField(
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: 'Criterio de busqueda...',
+                  labelText: 'Buscar',
+                  suffixIcon: Icon(Icons.search)
+                ),
+                onChanged: (value) {
+                  _search = value;
+                },
+              )
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(), 
+              child: Text('Cancelar')
+            ),
+            TextButton(
+              onPressed: () => _filter(), 
+              child: Text('Filtrar')
+            ),
+          ],
+        );
+      }
+    );
+  }
+
+
+  void _filter() {
+    if (_search.isEmpty) {
+      return;
+    }
+
+    List<Character> filteredList = [];
+    
+    for (var character in _characters) {
+      if (character.name.toLowerCase().contains(_search.toLowerCase())) {
+        filteredList.add(character);
+      }
+    }
+
+    setState(() {
+      _characters = filteredList;
+      _isFiltered = true;
+    });
+
+    Navigator.of(context).pop();
+  }
+
+  void _removeFilter() {
+    setState(() {
+      _isFiltered = false;
+    });
+    _getCharacters();
   }
 
   Future<Null> _getCharacters() async {
@@ -134,5 +222,6 @@ class _CharactersScreenState extends State<CharactersScreen> {
     setState(() {
       _characters = response.result;
     });
+
   }
 }
