@@ -30,7 +30,8 @@ class _CharactersScreenState extends State<CharactersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Marcas'),
+        backgroundColor: Colors.amber,
+        title: Text('Personajes'),
         actions: <Widget>[
           _isFiltered
           ? IconButton(
@@ -67,23 +68,30 @@ class _CharactersScreenState extends State<CharactersScreen> {
                 child: Column(
                   children: [
                     Row(
-                      
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(150),
+                              child: FadeInImage(
+                                placeholder: AssetImage('assets/not_found.png'), 
+                                image: NetworkImage(e.image),
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit.cover
+                              ),
+                            ),
+                          ],
+                        ),
                         Text(
                           e.name, 
                           style: TextStyle(
                             fontSize: 20
                           ),
                         ),
-                        FadeInImage(
-                          placeholder: AssetImage('assets/not_found.png'), 
-                          image: NetworkImage(e.image),
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.cover
-                        ),
-                        Icon(Icons.arrow_forward_ios),
+                        Icon(Icons.touch_app),
                       ],
                     ),
                   ],

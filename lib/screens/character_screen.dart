@@ -1,6 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:rycky_and_morty_app/components/loader_component.dart';
 import 'package:rycky_and_morty_app/helpers/api_helper.dart';
 import 'package:rycky_and_morty_app/models/character.dart';
@@ -29,18 +30,21 @@ class _CharacterScreenState extends State<CharacterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.amber,
         title: Text(_character.name),
       ),
       body: Center(
-        child: _showLoader 
-        ? LoaderComponent(text: 'Por favor espere...') 
-        : _getContent(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _goAdd(),
-      ),
-    );
+        child: 
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                _showLoader 
+                  ? LoaderComponent(text: 'Por favor espere...') 
+                  : _getContent(),
+              ],
+            ),
+          )),
+      );
   }
 
   Widget _showUserInfo() {
@@ -57,22 +61,19 @@ class _CharacterScreenState extends State<CharacterScreen> {
                 children: [
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            Text(
-                              'Foto: ', 
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(150),
+                                child: FadeInImage(
+                                  placeholder: AssetImage('assets/not_found.png'), 
+                                  image: NetworkImage(_character.image),
+                                  width: 300,
+                                  height: 300,
+                                  fit: BoxFit.cover
                                 ),
-                              ),
-                              FadeInImage(
-                                placeholder: AssetImage('assets/not_found.png'), 
-                                image: NetworkImage(_character.image),
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover
                               ),
                           ],
                         ),
@@ -181,78 +182,109 @@ class _CharacterScreenState extends State<CharacterScreen> {
                         SizedBox(height: 5,),
                         Row(
                           children: <Widget>[
-                            Text(
-                              'Origin/Name: ', 
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
-                           for ( var i in _character.origin ) Text(i.name)
-                          ],
-                        ),
-                        SizedBox(height: 5,),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Origin/Url: ', 
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
-                           for ( var i in _character.origin ) Text(i.url)
-                          ],
-                        ),
-                        SizedBox(height: 5,),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Location/Name: ', 
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
-                           for ( var i in _character.location ) Text(i.name)
-                          ],
-                        ),
-                        SizedBox(height: 5,),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Location/Url: ', 
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
-                           for ( var i in _character.location ) Text(i.url)
-                          ],
-                        ),
-                        SizedBox(height: 5,),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Episodes: ', 
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
-                           for ( var i in _character.episode ) Text(i)
-                          ],
-                        ),
-                        SizedBox(height: 5,),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              'Url: ', 
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ),
-                            Text(
-                              _character.url, 
-                              style: TextStyle(
-                              fontSize: 14,
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Origin/Name: ', 
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  for ( var i in _character.origin ) Text(i.name)
+                              ],
                             ),
+                          ],
+                        ),
+                        SizedBox(height: 5,),
+                        Row(
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Origin/Url: ', 
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  for ( var i in _character.origin ) Text(i.url)
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5,),
+                        Row(
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Location/Name: ', 
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  for ( var i in _character.location ) Text(i.name)
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5,),
+                        Row(
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Location/Url: ', 
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  for ( var i in _character.location ) Text(i.url)
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5,),
+                        Row(
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Episodes: ', 
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  for ( var i in _character.episode ) Text(i)
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5,),
+                        Row(
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Url: ', 
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  Text(
+                                    _character.url, 
+                                    style: TextStyle(
+                                    fontSize: 14,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                            
                           ],
                         ),
                         SizedBox(height: 5,),
