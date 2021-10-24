@@ -45,7 +45,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
         ],
       ),
       body: Center(
-        child: _showLoader ? LoaderComponent(text: 'Por favor espere...') : _getContent(),
+        child: _showLoader ? LoaderComponent(text: 'Espere por favor...') : _getContent(),
       ),
     );
   }
@@ -128,7 +128,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text('Escriba las primeras letras del personaje'),
+              Text('Escriba su palabra clave'),
               SizedBox(height: 10,),
               TextField(
                 autofocus: true,
@@ -202,7 +202,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
       await showAlertDialog(
         context: context,
         title: 'Error',
-        message: 'Verifica que estes conectado a internet',
+        message: 'Verifica tu conexion a internet',
         actions: <AlertDialogAction>[
           AlertDialogAction(key: null, label: 'Aceptar'),
         ]

@@ -39,7 +39,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
             child: Column(
               children: <Widget>[
                 _showLoader 
-                  ? LoaderComponent(text: 'Por favor espere...') 
+                  ? LoaderComponent(text: 'Espere por favor...') 
                   : _getContent(),
               ],
             ),
@@ -331,7 +331,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
       await showAlertDialog(
         context: context,
         title: 'Error',
-        message: 'Verifica que estes conectado a internet',
+        message: 'Verifica tu conexion a internet',
         actions: <AlertDialogAction>[
           AlertDialogAction(key: null, label: 'Aceptar'),
         ]
